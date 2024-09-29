@@ -1,0 +1,8 @@
+## Interface: 110000, 110002, 110005
+## Title: Quick Money Transfer
+## Version: 1.0
+## Author: SirJ0K3R
+## Notes: Adds new options to the money transfer dialog so that you can transfer money faster
+## IconTexture: Interface\AddOns\QuickMoneyTransfer\Resources\QuickMoneyTransfer-32.tga
+
+QuickMoneyTransfer.lua
