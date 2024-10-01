@@ -3,7 +3,7 @@ QMT_TransactionOptions = nil;
 AccountBankPanel:HookScript("OnShow", function()
     QMT_CreateTransactionOptions();
     QMT_DrawTransactionOptionsButtons();
-    QMT_ToggleButtonVisibility();
+    QMT_ToggleButtonAvailability();
     QMT_TransactionOptions:Show();
 end)
 
@@ -11,16 +11,16 @@ AccountBankPanel:HookScript("OnHide", function()
     QMT_TransactionOptions:Hide();
 end)
 
-AccountBankPanel:HookScript("OnEvent", function(a,b,c,d)
-    if (b == "ACCOUNT_MONEY") then
-       QMT_ToggleButtonVisibility();
+AccountBankPanel:HookScript("OnEvent", function(_, event)
+    if (event == "ACCOUNT_MONEY") then
+       QMT_ToggleButtonAvailability();
     end
 end)
 
 function QMT_CreateTransactionOptions()
     if (QMT_TransactionOptions == nil) then
         QMT_TransactionOptions = CreateFrame("Frame", nil, UIParent, "BackdropTemplate");
-        QMT_TransactionOptions:SetSize(200, 62.5);
+        QMT_TransactionOptions:SetSize(200, 165);
         QMT_TransactionOptions:SetPoint("TOPRIGHT", BankFrame, "BOTTOMRIGHT", -7.5, 7.5);
 
         QMT_TransactionOptions:SetBackdrop({
@@ -31,133 +31,86 @@ function QMT_CreateTransactionOptions()
         });
         QMT_TransactionOptions:SetBackdropColor(255, 255, 255, 0.8);
         QMT_TransactionOptions:SetFrameStrata("LOW");
-
-        QMT_TransactionOptions.btnCount = 0;
     end
 end
 
-function QMT_ResizeTransactionOptions()
-    QMT_TransactionOptions:SetHeight(25 * QMT_TransactionOptions.btnCount + 15);
-end
-
-function QMT_ToggleButtonVisibility()
+function QMT_ToggleButtonAvailability()
     
     
     local bankMoney = C_Bank.FetchDepositedMoney(Enum.BankType.Account) / 100 / 100;
     local bagMoney = GetMoney() / 100 / 100;
 
     if (bankMoney <= 0) then
-        QMT_HideAllWithdrawButtons();
+        QMT_DisableAllWithdrawButtons();
     else
-        QMT_TransactionOptions.btnWithdrawAll:Show();
-        QMT_TransactionOptions.btnWithdrawHalf:Show();
+        QMT_TransactionOptions.btnWithdrawAll:Enable();
+        QMT_TransactionOptions.btnWithdrawHalf:Enable();
         if (bankMoney >= 1000) then
-            QMT_TransactionOptions.btnWithdraw1K:Show();
+            QMT_TransactionOptions.btnWithdraw1K:Enable();
         else
-            QMT_TransactionOptions.btnWithdraw1K:Hide();
+            QMT_TransactionOptions.btnWithdraw1K:Disable();
         end
         if (bankMoney >= 10000) then
-            QMT_TransactionOptions.btnWithdraw10K:Show();
+            QMT_TransactionOptions.btnWithdraw10K:Enable();
         else
-            QMT_TransactionOptions.btnWithdraw10K:Hide();
+            QMT_TransactionOptions.btnWithdraw10K:Disable();
         end
         if (bankMoney >= 100000) then
-            QMT_TransactionOptions.btnWithdraw100K:Show();
+            QMT_TransactionOptions.btnWithdraw100K:Enable();
         else
-            QMT_TransactionOptions.btnWithdraw100K:Hide();
+            QMT_TransactionOptions.btnWithdraw100K:Disable();
         end
         if (bankMoney >= 1000000) then
-            QMT_TransactionOptions.btnWithdraw1M:Show();
+            QMT_TransactionOptions.btnWithdraw1M:Enable();
         else
-            QMT_TransactionOptions.btnWithdraw1M:Hide();
+            QMT_TransactionOptions.btnWithdraw1M:Disable();
         end
     end
 
     if (bagMoney <= 0) then
-        QMT_HideAllDepositButtons();
+        QMT_DisableAllDepositButtons();
     else
-        QMT_TransactionOptions.btnDepositAll:Show();
-        QMT_TransactionOptions.btnDepositHalf:Show();
+        QMT_TransactionOptions.btnDepositAll:Enable();
+        QMT_TransactionOptions.btnDepositHalf:Enable();
         if (bagMoney >= 1000) then
-            QMT_TransactionOptions.btnDeposit1K:Show();
+            QMT_TransactionOptions.btnDeposit1K:Enable();
         else
-            QMT_TransactionOptions.btnDeposit1K:Hide();
+            QMT_TransactionOptions.btnDeposit1K:Disable();
         end
         if (bagMoney >= 10000) then
-            QMT_TransactionOptions.btnDeposit10K:Show();
+            QMT_TransactionOptions.btnDeposit10K:Enable();
         else
-            QMT_TransactionOptions.btnDeposit10K:Hide();
+            QMT_TransactionOptions.btnDeposit10K:Disable();
         end
         if (bagMoney >= 100000) then
-            QMT_TransactionOptions.btnDeposit100K:Show();
+            QMT_TransactionOptions.btnDeposit100K:Enable();
         else
-            QMT_TransactionOptions.btnDeposit100K:Hide();
+            QMT_TransactionOptions.btnDeposit100K:Disable();
         end
         if (bagMoney >= 1000000) then
-            QMT_TransactionOptions.btnDeposit1M:Show();
+            QMT_TransactionOptions.btnDeposit1M:Enable();
         else
-            QMT_TransactionOptions.btnDeposit1M:Hide();
+            QMT_TransactionOptions.btnDeposit1M:Disable();
         end
     end
-    
-    QMT_TransactionOptions.btnCount = QMT_GetButtonCount();
-
-    QMT_ResizeTransactionOptions();
 end
 
-function QMT_HideAllDepositButtons()
-    QMT_TransactionOptions.btnDepositAll:Hide();
-    QMT_TransactionOptions.btnDepositHalf:Hide();
-    QMT_TransactionOptions.btnDeposit1K:Hide();
-    QMT_TransactionOptions.btnDeposit10K:Hide();
-    QMT_TransactionOptions.btnDeposit100K:Hide();
-    QMT_TransactionOptions.btnDeposit1M:Hide();
+function QMT_DisableAllDepositButtons()
+    QMT_TransactionOptions.btnDepositAll:Disable();
+    QMT_TransactionOptions.btnDepositHalf:Disable();
+    QMT_TransactionOptions.btnDeposit1K:Disable();
+    QMT_TransactionOptions.btnDeposit10K:Disable();
+    QMT_TransactionOptions.btnDeposit100K:Disable();
+    QMT_TransactionOptions.btnDeposit1M:Disable();
 end
 
-function QMT_HideAllWithdrawButtons()
-    QMT_TransactionOptions.btnWithdrawAll:Hide();
-    QMT_TransactionOptions.btnWithdrawHalf:Hide();
-    QMT_TransactionOptions.btnWithdraw1K:Hide();
-    QMT_TransactionOptions.btnWithdraw10K:Hide();
-    QMT_TransactionOptions.btnWithdraw100K:Hide();
-    QMT_TransactionOptions.btnWithdraw1M:Hide();
-end
-
-function QMT_GetButtonCount()
-    local btnWithdrawCount = 0;
-    local btnDepositCount = 0;
-    
-    if (QMT_TransactionOptions.btnWithdrawAll:IsShown()) then
-        btnWithdrawCount = 2;
-        if (QMT_TransactionOptions.btnWithdraw1M:IsShown()) then
-            btnWithdrawCount = btnWithdrawCount + 4;
-        elseif (QMT_TransactionOptions.btnWithdraw100K:IsShown()) then
-            btnWithdrawCount = btnWithdrawCount + 3;
-        elseif (QMT_TransactionOptions.btnWithdraw10K:IsShown()) then
-            btnWithdrawCount = btnWithdrawCount + 2;
-        elseif (QMT_TransactionOptions.btnWithdraw1K:IsShown()) then
-            btnWithdrawCount = btnWithdrawCount + 1;
-        end
-    end
-        
-    if (QMT_TransactionOptions.btnDepositAll:IsShown()) then
-        btnDepositCount = 2;
-        if (QMT_TransactionOptions.btnDeposit1M:IsShown()) then
-            btnDepositCount = btnDepositCount + 4;
-        elseif (QMT_TransactionOptions.btnDeposit100K:IsShown()) then
-            btnDepositCount = btnDepositCount + 3;
-        elseif (QMT_TransactionOptions.btnDeposit10K:IsShown()) then
-            btnDepositCount = btnDepositCount + 2;
-        elseif (QMT_TransactionOptions.btnDeposit1K:IsShown()) then
-            btnDepositCount = btnDepositCount + 1;
-        end
-    end
-        
-    if (btnWithdrawCount > btnDepositCount) then
-        return btnWithdrawCount;
-    else
-        return btnDepositCount;
-    end
+function QMT_DisableAllWithdrawButtons()
+    QMT_TransactionOptions.btnWithdrawAll:Disable();
+    QMT_TransactionOptions.btnWithdrawHalf:Disable();
+    QMT_TransactionOptions.btnWithdraw1K:Disable();
+    QMT_TransactionOptions.btnWithdraw10K:Disable();
+    QMT_TransactionOptions.btnWithdraw100K:Disable();
+    QMT_TransactionOptions.btnWithdraw1M:Disable();
 end
 
 function QMT_DrawTransactionOptionsButtons()

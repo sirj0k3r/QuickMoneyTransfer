@@ -1,8 +1,8 @@
 ## Interface: 110000, 110002, 110005
 ## Title: Quick Money Transfer
-## Version: 1.0
+## Version: 1.0.1
 ## Author: SirJ0K3R
-## Notes: Adds new options to the money transfer dialog so that you can transfer money faster
+## Notes: Adds buttons to transfer 100%, 50%, 1K, 10K, 100K and 1M from/to your bank
 ## IconTexture: Interface\AddOns\QuickMoneyTransfer\Resources\QuickMoneyTransfer-32.tga
 
 QuickMoneyTransfer.lua
