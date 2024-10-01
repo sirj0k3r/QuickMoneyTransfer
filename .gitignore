@@ -8,3 +8,6 @@
 # Export
 QuickMoneyTransfer
 *.zip
+
+# VS Code
+.vscode
